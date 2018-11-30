@@ -8,20 +8,17 @@ using namespace std;
 
 typedef struct Node
 {
-    string data;
+    int data;
     Node *next;
     Node *prev;
 } Node;
 
 Node *head = NULL;
 Node *tail = NULL;
-Node *hPtr = NULL;
-Node *tPtr = NULL;
 
-void listAddNode(Node *prevNode, string val)
+void listAddNode(Node *prevNode, int val)
 {
-    fprintf(stderr, "debug print, prevNode = %s\n", prevNode->data.c_str()); // 4debug
-    Node *newNode = (Node *)malloc(sizeof(Node *));
+    Node *newNode = (Node *)malloc(sizeof(Node));
     Node *nextNode = prevNode->next;
     prevNode->next = newNode;
     newNode->next = nextNode;
@@ -29,8 +26,6 @@ void listAddNode(Node *prevNode, string val)
     newNode->prev = prevNode;
 
     newNode->data = val;
-
-    cout << newNode->next->data << " " << newNode->prev->data << endl; // 4debug
 }
 
 void listDelNode(Node *p)
@@ -42,34 +37,29 @@ void listDelNode(Node *p)
 
 void listInit()
 {
-    head = (Node *)malloc(sizeof(Node *));
-    tail = (Node *)malloc(sizeof(Node *));
+    head = (Node *)malloc(sizeof(Node));
+    tail = (Node *)malloc(sizeof(Node));
     head->next = tail;
     head->prev = NULL;
-    head->data = "LIST_FIRST_NODE";
-    hPtr = head->next;
-    tail->next = NULL;                                                // this is the bug part;
-    fprintf(stderr, "debug print : head = %s\n", head->data.c_str()); // 4debug
+    head->data = INT_MAX;
+    tail->next = NULL;
     tail->prev = head;
-    tail->data = "LIST_LAST_NODE";
-    tPtr = tail->prev;
-
-    fprintf(stderr, "debug print : head = %s, tail = %s\n", head->data.c_str(), tail->data.c_str()); // 4debug
+    tail->data = INT_MIN;
 }
 
-void listAddHead(string val)
+void listAddHead(int val)
 {
     listAddNode(head, val);
 }
 
-void listAddTail(string val)
+void listAddTail(int val)
 {
-    listAddNode(tPtr, val);
+    listAddNode(tail->prev, val);
 }
 
-void listRemove(string val)
+void listRemove(int val)
 {
-    for (Node *p = hPtr; p != tail;)
+    for (Node *p = head->next; p != tail;)
     {
         if (p->data == val)
         {
@@ -81,19 +71,18 @@ void listRemove(string val)
 
 void listDelHead()
 {
-    listDelNode(hPtr);
-    hPtr = head->next;
+    listDelNode(head->next);
 }
 
 void listDelTail()
 {
-    listDelNode(tPtr);
-    tPtr = tail->prev;
+    listDelNode(tail->prev);
+    tail->prev = tail->prev;
 }
 
 void listDelAll()
 {
-    for (Node *p = hPtr; p != tail;)
+    for (Node *p = head->next; p != tail;)
     {
         p = p->next;
         listDelNode(p->prev);
@@ -109,11 +98,10 @@ void listFin()
 
 void printListLn()
 {
-    for (Node *p = hPtr; p != tail;)
+    for (Node *p = head->next; p != tail; p = p->next)
     {
-        p = p->next;
-        cout << p->prev->data;
-        if (p != tail)
+        cout << p->data;
+        if (p->next != tail)
             printf(" ");
     }
     printf("\n");
@@ -132,23 +120,24 @@ int main()
     cReadLn(n);
     listInit();
 
-    string cmd, val;
+    int val;
     for (int i = 0; i < n; i++)
     {
+        string cmd;
         cin >> cmd;
         if (cmd == "insertFirst")
         {
-            cin >> val;
+            scanf("%d", &val);
             listAddHead(val);
         }
         else if (cmd == "insertLast")
         {
-            cin >> val;
+            scanf("%d", &val);
             listAddTail(val);
         }
         else if (cmd == "delete")
         {
-            cin >> val;
+            scanf("%d", &val);
             listRemove(val);
         }
         else if (cmd == "deleteFirst")
@@ -158,6 +147,8 @@ int main()
         else if (cmd == "deleteAll")
             listDelAll();
     }
+
+    printListLn();
 
     listFin();
 
