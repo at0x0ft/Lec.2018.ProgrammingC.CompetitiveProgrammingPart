@@ -127,9 +127,8 @@ void cPrintLn(const int *array, const int arrayLength, const char delimiter = ' 
         printf("%d", array[i]);
         if (i != arrayLength - 1)
             printf("%c", delimiter);
-        else
-            printf("\n");
     }
+    printf("\n");
 }
 
 void cPrintLn(const long long int *array, const int arrayLength, const char delimiter = ' ')
