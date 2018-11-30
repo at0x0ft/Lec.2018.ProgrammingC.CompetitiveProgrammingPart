@@ -1,7 +1,36 @@
 #include <bits/stdc++.h>
-#include "compTmp.cpp"
 
 using namespace std;
+
+void cReadLn(int &n)
+{
+    scanf("%d", &n);
+}
+
+void cReadLn(std::vector<int> &v)
+{
+    int n = v.size();
+    for (int i = 0; i < n; i++)
+        scanf("%d", &v[i]);
+}
+
+void cPrintLn(const int &a)
+{
+    printf("%d\n", a);
+}
+
+void cPrintLn(const std::vector<int> &v, char delimiter = ' ')
+{
+    int n = v.size();
+    for (int i = 0; i < n; i++)
+    {
+        std::cout << v[i];
+        if (i != n - 1)
+            printf("%c", delimiter);
+        else
+            printf("\n");
+    }
+}
 
 int bubbleSort(vector<int> &a)
 {
