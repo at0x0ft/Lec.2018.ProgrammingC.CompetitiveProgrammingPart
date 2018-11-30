@@ -2,90 +2,83 @@
 
 using namespace std;
 
-/* MyStack class definition. */
+#define STACK_SIZE 100 + 101
 
-class MyStack
+/* Stack Definition */
+long long int myStack[STACK_SIZE];
+int stackTop = 0;
+
+void push(long long int val)
 {
-  private:
-    long long int *_data = NULL;
-    int &_top;
-
-  public:
-    MyStack();
-    MyStack(int n);
-    ~MyStack();
-    long long int pop();
-    void push(long long int v);
-};
-
-/*
-MyStack::MyStack()
-{
-    _top = 0;
-    _data = NULL;
-}
-*/
-
-MyStack::MyStack(int n) // : _data((long long int *)malloc(sizeof(long long int) * n))
-{
-    this->_top = 0;
-    this->_data = (long long int *)malloc(sizeof(long long int) * n);
+    myStack[stackTop++] = val;
 }
 
-MyStack::~MyStack()
+long long int pop()
 {
-    if (_data != NULL)
-        free(_data);
+    return myStack[--stackTop];
 }
 
-long long int MyStack::pop()
-{
-    return _data[_top--];
-}
-
-void MyStack::push(long long int v)
-{
-    _data[_top++] = v;
-}
-
-/* End MyStack class definition. */
+/* END Stack Definition */
 
 void cReadLn(std::string &str)
 {
-    cin >> str;
+    getline(cin, str);
 }
 
-void cPrintLn(long long int n)
+void cPrintLn(const long long int n)
 {
     printf("%lld\n", n);
 }
 
-int parseNum(const string &exp, int &startIdx)
+void cPrintLn(const long long int *array, const int arrayLength, const char delimiter = ' ')
 {
-    int i;
-    for (i = 0; exp[startIdx + i] != ' '; i++)
-        ;
+    for (int i = 0; i < arrayLength; i++)
+    {
+        printf("%lld", array[i]);
+        if (i != arrayLength - 1)
+            printf("%c", delimiter);
+        else
+            printf("\n");
+    }
+}
 
-    int res = atoi(exp.substr(startIdx, i).c_str());
-    startIdx = i + 1;
+long long int parseNum(const char *exp, int &startIdx)
+{
+    long long int res = 0;
+    for (; exp[startIdx] != ' '; startIdx++)
+    {
+        res *= 10;
+        res += exp[startIdx] - '0';
+    }
+
     return res;
 }
 
-long long int calcExp(const string &exp)
+void calcExp(const char *exp, int length)
 {
-    int n = exp.size();
-    MyStack s(201);
+    int n = length;
     for (int i = 0; i < n; i++)
     {
-        if (0 <= exp[i] && exp[i] <= 9)
-            s.push(parseNum(exp, i));
+        if ('0' <= exp[i] && exp[i] <= '9')
+        {
+            push(parseNum(exp, i));
+            cPrintLn(myStack, stackTop);
+        }
         else if (exp[i] == '+')
-            s.push(s.pop() + s.pop());
+        {
+            push(pop() + pop());
+            i++;
+            cPrintLn(myStack, stackTop);
+        }
         else if (exp[i] == '*')
-            s.push(s.pop() * s.pop());
+        {
+            push(pop() * pop());
+            i++;
+            cPrintLn(myStack, stackTop);
+        }
+        else if (exp[i] == '=')
+            return; // 4debug
     }
-
-    return s.pop();
 }
 
 int main()
@@ -93,7 +86,7 @@ int main()
     string buf;
     cReadLn(buf);
 
-    cPrintLn(calcExp(buf));
+    calcExp(buf.c_str(), buf.length());
 
     return 0;
 }
