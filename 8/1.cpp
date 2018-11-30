@@ -1,7 +1,19 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-using namespace cpt;
+
+void printArray(const vector<int> &a)
+{
+    int n = a.size();
+    for (int i = 0; i < n; i++)
+    {
+        cout << a[i];
+        if (i != n - 1)
+            printf(" ");
+        else
+            printf("\n");
+    }
+}
 
 int insertionSort(vector<int> &a)
 {
@@ -26,14 +38,19 @@ int main()
 {
     int n;
 
-    cReadLn(n);
+    scanf("%d", &n);
+
     vector<int> v(n);
-    cReadLn(v);
+
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &v[i]);
+    }
 
     int cnt = insertionSort(v);
 
     printf("%d\n", cnt);
-    cPrintLn(v);
+    printArray(v);
 
     return 0;
 }
