@@ -115,6 +115,35 @@ void cPrintLn(const int &a)
     printf("%d\n", a);
 }
 
+void cPrintLn(const long long int n)
+{
+    printf("%lld\n", n);
+}
+
+void cPrintLn(const int *array, const int arrayLength, const char delimiter = ' ')
+{
+    for (int i = 0; i < arrayLength; i++)
+    {
+        printf("%d", array[i]);
+        if (i != arrayLength - 1)
+            printf("%c", delimiter);
+        else
+            printf("\n");
+    }
+}
+
+void cPrintLn(const long long int *array, const int arrayLength, const char delimiter = ' ')
+{
+    for (int i = 0; i < arrayLength; i++)
+    {
+        printf("%lld", array[i]);
+        if (i != arrayLength - 1)
+            printf("%c", delimiter);
+        else
+            printf("\n");
+    }
+}
+
 void cPrintLn(const std::vector<int> &v, char delimiter = ' ')
 {
     int n = v.size();
