@@ -58,11 +58,6 @@ ostream &operator<<(std::ostream &os, std::vector<T> &vec)
 }
 */
 
-void cReadLn(int &n)
-{
-    scanf("%d", &n);
-}
-
 bool IsStringEnd(char *str, int idx)
 {
     return str[idx] == '\0';
@@ -95,6 +90,11 @@ void cReadLn(std::vector<int> &v, char deliminater = ' ')
     scanf(bufidx);
 }
 */
+
+void cReadLn(int &n)
+{
+    scanf("%d", &n);
+}
 
 void cReadLn(std::vector<int> &v)
 {
