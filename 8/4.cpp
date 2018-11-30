@@ -1,83 +1,99 @@
 #include <bits/stdc++.h>
-#include "compTmp.cpp"
 
 using namespace std;
 
-/* Stack class definition. */
+/* MyStack class definition. */
 
-class Stack
+class MyStack
 {
   private:
-    int *_data;
+    long long int *_data = NULL;
     int &_top;
 
   public:
-    Stack(int n);
-    ~Stack();
-    int Pop();
-    void Push(int v);
+    MyStack();
+    MyStack(int n);
+    ~MyStack();
+    long long int pop();
+    void push(long long int v);
 };
 
-Stack::Stack(int n) : _data((int *)malloc(sizeof(int) * n))
+/*
+MyStack::MyStack()
 {
     _top = 0;
+    _data = NULL;
+}
+*/
+
+MyStack::MyStack(int n) // : _data((long long int *)malloc(sizeof(long long int) * n))
+{
+    this->_top = 0;
+    this->_data = (long long int *)malloc(sizeof(long long int) * n);
 }
 
-Stack::~Stack()
+MyStack::~MyStack()
 {
     if (_data != NULL)
         free(_data);
 }
 
-int Stack::Pop()
+long long int MyStack::pop()
 {
     return _data[_top--];
 }
 
-void Stack::Push(int v)
+void MyStack::push(long long int v)
 {
     _data[_top++] = v;
 }
 
-/* End stack class definition. */
+/* End MyStack class definition. */
 
-long long int add(Stack &s)
+void cReadLn(std::string &str)
 {
-    return s.Pop() + s.Pop();
+    cin >> str;
 }
 
-long long int sub(Stack &s)
+void cPrintLn(long long int n)
 {
-    return s.Pop() - s.Pop();
+    printf("%lld\n", n);
 }
 
-long long int mul(Stack &s)
+int parseNum(const string &exp, int &startIdx)
 {
-    return s.Pop() * s.Pop();
+    int i;
+    for (i = 0; exp[startIdx + i] != ' '; i++)
+        ;
+
+    int res = atoi(exp.substr(startIdx, i).c_str());
+    startIdx = i + 1;
+    return res;
 }
 
-long long int div(Stack &s)
+long long int calcExp(const string &exp)
 {
-    return s.Pop() / s.Pop();
-}
+    int n = exp.size();
+    MyStack s(201);
+    for (int i = 0; i < n; i++)
+    {
+        if (0 <= exp[i] && exp[i] <= 9)
+            s.push(parseNum(exp, i));
+        else if (exp[i] == '+')
+            s.push(s.pop() + s.pop());
+        else if (exp[i] == '*')
+            s.push(s.pop() * s.pop());
+    }
 
-int parseExpression()
-{
-    char buf;
-    scanf("%c", &buf);
+    return s.pop();
 }
 
 int main()
 {
-    int n;
-    cReadLn(n);
-    vector<int> v(n);
-    cReadLn(v);
+    string buf;
+    cReadLn(buf);
 
-    int cnt = selectionSort(v);
-
-    cPrintLn(cnt);
-    cPrintLn(v);
+    cPrintLn(calcExp(buf));
 
     return 0;
 }
