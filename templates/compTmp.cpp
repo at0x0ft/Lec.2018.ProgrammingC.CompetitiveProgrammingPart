@@ -58,9 +58,9 @@ ostream &operator<<(std::ostream &os, std::vector<T> &vec)
 }
 */
 
-void cReadLn(int &v)
+void cReadLn(int &n)
 {
-    scanf("%d", &v);
+    scanf("%d", &n);
 }
 
 bool IsStringEnd(char *str, int idx)
@@ -115,13 +115,12 @@ void cPrintLn(const int &a)
     printf("%d\n", a);
 }
 
-///<summary>Console print array in single line.</summary>
-void cPrintLn(const std::vector<int> &a, char delimiter = ' ')
+void cPrintLn(const std::vector<int> &v, char delimiter = ' ')
 {
-    int n = a.size();
+    int n = v.size();
     for (int i = 0; i < n; i++)
     {
-        std::cout << a[i];
+        std::cout << v[i];
         if (i != n - 1)
             printf("%c", delimiter);
         else
