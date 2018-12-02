@@ -7,6 +7,11 @@ void cReadLn(int &n)
     scanf("%d", &n);
 }
 
+void cPrintLn(const int &a)
+{
+    printf("%d\n", a);
+}
+
 void cReadLn(std::vector<int> &v)
 {
     int n = v.size();
@@ -14,54 +19,31 @@ void cReadLn(std::vector<int> &v)
         scanf("%d", &v[i]);
 }
 
-void cPrintLn(const int &a)
+int findMinDiff(vector<int> &v)
 {
-    printf("%d\n", a);
-}
+    sort(v.begin(), v.end());
 
-void cPrintLn(const std::vector<int> &v, char delimiter = ' ')
-{
-    int n = v.size();
-    for (int i = 0; i < n; i++)
+    int minDiff = v[1] - v[0], n = v.size();
+    for (int i = 1; i < n - 1; i++)
     {
-        std::cout << v[i];
-        if (i != n - 1)
-            printf("%c", delimiter);
-        else
-            printf("\n");
+        minDiff = min(minDiff, v[i + 1] - v[i]);
     }
-}
-
-int bubbleSort(vector<int> &a)
-{
-    int flg = 1, n = a.size(), cnt = 0;
-    while (flg)
-    {
-        flg = 0;
-        for (int j = n - 1; j >= 1; j--)
-        {
-            if (a[j] > a[j - 1])
-            {
-                swap(a[j], a[j - 1]);
-                flg = 1;
-                cnt++;
-            }
-        }
-    }
-    return cnt;
+    return minDiff;
 }
 
 int main()
 {
-    int n;
-    cReadLn(n);
-    vector<int> v(n);
-    cReadLn(v);
+    while (true)
+    {
+        int n;
+        cReadLn(n);
+        if (n == 0)
+            break;
+        vector<int> v(n);
+        cReadLn(v);
 
-    int cnt = bubbleSort(v);
-
-    cPrintLn(cnt);
-    cPrintLn(v);
+        cPrintLn(findMinDiff(v));
+    }
 
     return 0;
 }
