@@ -2,84 +2,62 @@
 
 using namespace std;
 
-void cReadLn(int &n)
+void merge(vector<int> &a, const int left, const int mid, const int right, int &cnt)
 {
-    scanf("%d", &n);
-}
+    cnt++;
+    int n1 = mid - left, n2 = right - mid;
+    vector<int> l(n1 + 1), r(n2 + 1);
+    for (int i = 0; i < n1; i++)
+        l[i] = a[left + i];
+    l[n1] = INT_MIN;
+    for (int i = 0; i < n2; i++)
+        r[i] = a[mid + i];
+    r[n2] = INT_MIN;
 
-void cReadLn(std::vector<int> &v)
-{
-    int n = v.size();
-    for (int i = 0; i < n; i++)
-        scanf("%d", &v[i]);
-}
+    int i = 0, j = 0;
 
-bool binSearch(const vector<int> &s, const int val)
-{
-    int high = 0, low = s.size() - 1;
-    if (low < 0)
-        return false;
-    while (low >= high)
+    for (int k = left; k < right; k++)
     {
-        int mid = (low + high) / 2;
-        if (s[mid] == val)
-        {
-            return true;
-        }
-        else if (s[mid] < val)
-        {
-            low = mid - 1;
-        }
+        if (l[i] >= r[j])
+            a[k] = l[i++];
         else
-        {
-            high = mid + 1;
-        }
+            a[k] = r[j++];
     }
-    return false;
 }
 
-void refine(const vector<int> &s, vector<int> &t)
+int mergeSort(vector<int> &a, const int left, const int right, int &cnt)
 {
-    int slen = s.size();
-    for (int j = 0; j < t.size(); j++)
+    int mid;
+    if (left + 1 < right)
     {
-        if (binSearch(s, t[j]))
-            t.erase(t.begin() + j);
+        mid = (left + right) / 2;
+        mergeSort(a, left, mid, cnt);
+        mergeSort(a, mid, right, cnt);
+        merge(a, left, mid, right, cnt);
     }
-}
-
-void cPrintLn(const std::vector<int> &v, char delimiter = ' ')
-{
-    int n = v.size();
-    for (int i = 0; i < n; i++)
-    {
-        std::cout << v[i];
-        if (i != n - 1)
-            printf("%c", delimiter);
-    }
-    printf("\n");
-}
-
-void cPrintLn(const int &a)
-{
-    printf("%d\n", a);
+    return cnt;
 }
 
 int main()
 {
     int n;
-    cReadLn(n);
-    vector<int> s(n);
-    cReadLn(s);
-    int q;
-    cReadLn(q);
-    vector<int> t(q);
-    cReadLn(t);
+    scanf("%d", &n);
+    vector<int> a(n);
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+    }
 
-    refine(s, t);
-
-    cPrintLn(t);
-    cPrintLn(t.size());
+    int cnt = 0;
+    cnt = mergeSort(a, 0, n, cnt);
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d", a[i]);
+        if (i != n - 1)
+            printf(" ");
+    }
+    printf("\n");
+    printf("%d\n", cnt);
 
     return 0;
 }
