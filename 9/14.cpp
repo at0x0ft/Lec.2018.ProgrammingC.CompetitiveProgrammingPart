@@ -2,91 +2,88 @@
 
 using namespace std;
 
-#define STACK_SIZE 100 + 101
-
-/* Stack Definition */
-long long int myStack[STACK_SIZE];
-int stackTop = 0;
-
-void push(long long int val)
+char convertKey2Char(const char key, const int cnt)
 {
-    myStack[stackTop++] = val;
-}
-
-long long int pop()
-{
-    return myStack[--stackTop];
-}
-
-/* END Stack Definition */
-
-void cReadLn(std::string &str)
-{
-    getline(cin, str);
-}
-
-void cPrintLn(const long long int n)
-{
-    printf("%lld\n", n);
-}
-
-void cPrintLn(const long long int *array, const int arrayLength, const char delimiter = ' ')
-{
-    for (int i = 0; i < arrayLength; i++)
+    switch (key)
     {
-        printf("%lld", array[i]);
-        if (i != arrayLength - 1)
-            printf("%c", delimiter);
-        else
-            printf("\n");
+    case '1':
+    {
+        switch (cnt % 5)
+        {
+        case 0:
+            return '.';
+        case 1:
+            return ',';
+        case 2:
+            return '!';
+        case 3:
+            return '?';
+        case 4:
+            return ' ';
+        }
+        break;
     }
-}
-
-long long int parseNum(const char *exp, int &startIdx)
-{
-    long long int res = 0;
-    for (; exp[startIdx] != ' '; startIdx++)
-    {
-        res *= 10;
-        res += exp[startIdx] - '0';
+    case '2':
+        return 'a' + (cnt % 3);
+    case '3':
+        return 'd' + (cnt % 3);
+    case '4':
+        return 'g' + (cnt % 3);
+    case '5':
+        return 'j' + (cnt % 3);
+    case '6':
+        return 'm' + (cnt % 3);
+    case '7':
+        return 'p' + (cnt % 4);
+    case '8':
+        return 't' + (cnt % 3);
+    case '9':
+        return 'w' + (cnt % 4);
     }
 
-    return res;
+    return '^';
 }
 
-void calcExp(const char *exp, int length)
+char resetChar(const string s, int &idx, const int slen)
 {
-    int n = length;
-    for (int i = 0; i < n; i++)
+    while (s[idx] == '0' && idx < slen)
     {
-        if ('0' <= exp[i] && exp[i] <= '9')
-        {
-            push(parseNum(exp, i));
-            cPrintLn(myStack, stackTop);
-        }
-        else if (exp[i] == '+')
-        {
-            push(pop() + pop());
-            i++;
-            cPrintLn(myStack, stackTop);
-        }
-        else if (exp[i] == '*')
-        {
-            push(pop() * pop());
-            i++;
-            cPrintLn(myStack, stackTop);
-        }
-        else if (exp[i] == '=')
-            return; // 4debug
+        idx++;
     }
+    return s[idx];
 }
 
 int main()
 {
-    string buf;
-    cReadLn(buf);
+    int n;
+    scanf("%d\n", &n);
 
-    calcExp(buf.c_str(), buf.length());
+    for (int i = 0; i < n; i++)
+    {
+        string buf;
+        getline(cin, buf);
+        int n = buf.size(), j = 0;
+        string ans = "";
+        char key = resetChar(buf, j, n);
+        int cnt = 0;
+        for (j = j + 1; j < n; j++)
+        {
+            if (buf[j] == '0')
+            {
+                ans.push_back(convertKey2Char(key, cnt));
+                j++;
+            }
+            else if (buf[j] == key)
+            {
+                cnt++;
+                continue;
+            }
+            key = resetChar(buf, j, n);
+            cnt = 0;
+        }
+
+        cout << ans << "\n";
+    }
 
     return 0;
 }
