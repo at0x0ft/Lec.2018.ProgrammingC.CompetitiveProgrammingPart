@@ -2,63 +2,46 @@
 
 using namespace std;
 
-void cReadLn(int &n)
+// create m bits sequence 1 numbers.
+void createCheckNums(const int n, const int m, vector<int> &res)
 {
-    scanf("%d", &n);
-}
-
-void cReadLn(std::vector<int> &v)
-{
-    int n = v.size();
-    for (int i = 0; i < n; i++)
-        scanf("%d", &v[i]);
-}
-
-void refine(const vector<int> &s, vector<int> &t)
-{
-    int slen = s.size();
-    for (int i = 0; i < slen; i++)
+    int mcn = (1 << m) - 1;
+    res[0] = mcn;
+    for (int i = 0; i < n - m; i++)
     {
-        for (int j = 0; j < t.size(); j++)
+        mcn = mcn << 1;
+        res[i + 1] = mcn;
+    }
+}
+
+int checkAll(const vector<int> &checks, const int n)
+{
+    int cnt = 0, cnum = checks.size();
+    int allNums = 1 << n;
+    for (int i = 0; i < allNums; i++)
+    {
+        for (int j = 0; j < cnum; j++)
         {
-            if (s[i] == t[j])
-                t.erase(t.begin() + j);
+            if ((i & checks[j]) == checks[j])
+            {
+                cnt++;
+                break;
+            }
         }
     }
-}
-
-void cPrintLn(const std::vector<int> &v, char delimiter = ' ')
-{
-    int n = v.size();
-    for (int i = 0; i < n; i++)
-    {
-        std::cout << v[i];
-        if (i != n - 1)
-            printf("%c", delimiter);
-    }
-    printf("\n");
-}
-
-void cPrintLn(const int &a)
-{
-    printf("%d\n", a);
+    return cnt;
 }
 
 int main()
 {
     int n;
-    cReadLn(n);
-    vector<int> s(n);
-    cReadLn(s);
-    int q;
-    cReadLn(q);
-    vector<int> t(q);
-    cReadLn(t);
+    scanf("%d", &n);
+    int m;
+    scanf("%d", &m);
 
-    refine(s, t);
-
-    cPrintLn(t);
-    cPrintLn(t.size());
+    vector<int> checks(n - m + 1);
+    createCheckNums(n, m, checks);
+    printf("%d\n", checkAll(checks, n));
 
     return 0;
 }
