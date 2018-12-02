@@ -2,55 +2,47 @@
 
 using namespace std;
 
-void printArray(const vector<int> &a)
+void cReadLn(int &n)
 {
-    int n = a.size();
-    for (int i = 0; i < n; i++)
-    {
-        cout << a[i];
-        if (i != n - 1)
-            printf(" ");
-        else
-            printf("\n");
-    }
+    scanf("%d", &n);
 }
 
-int insertionSort(vector<int> &a)
+void cReadLn(std::vector<int> &v)
 {
-    int v, cnt = 0, n = a.size();
+    int n = v.size();
     for (int i = 0; i < n; i++)
-    {
-        v = a[i];
-        int j = i - 1;
-        while (j >= 0 && a[j] < v)
-        {
-            a[j + 1] = a[j];
-            cnt++;
-            j--;
-        }
-        a[j + 1] = v;
-    }
+        scanf("%d", &v[i]);
+}
 
-    return cnt;
+void cPrintLn(const int &a)
+{
+    printf("%d\n", a);
+}
+
+int findMaxRec(const vector<int> &a, const int l, const int r)
+{
+    int res = INT_MIN;
+    if (l == r - 1)
+        res = a[l];
+    else
+    {
+        int mid = (l + r) / 2;
+        int lcnd = findMaxRec(a, l, mid);
+        int rcnd = findMaxRec(a, mid, r);
+        res = max(lcnd, rcnd);
+    }
+    cPrintLn(res);
+    return res;
 }
 
 int main()
 {
     int n;
-
-    scanf("%d", &n);
-
+    cReadLn(n);
     vector<int> v(n);
+    cReadLn(v);
 
-    for (int i = 0; i < n; i++)
-    {
-        scanf("%d", &v[i]);
-    }
-
-    int cnt = insertionSort(v);
-
-    printf("%d\n", cnt);
-    printArray(v);
+    findMaxRec(v, 0, n);
 
     return 0;
 }
