@@ -2,67 +2,75 @@
 
 using namespace std;
 
-void cReadLn(int &n)
+int cor2Idx(const int i, const int j, const int width)
 {
-    scanf("%d", &n);
+    return i * width + j;
 }
 
-void cReadLn(std::vector<int> &v)
+void idx2Cor(const int idx, int &i, int &j, const int width)
 {
-    int n = v.size();
-    for (int i = 0; i < n; i++)
-        scanf("%d", &v[i]);
+    i = idx / width;
+    j = idx % width;
 }
 
-void cPrintLn(const int &a)
+bool isRange(const int i, const int j, const int w, const int h)
 {
-    printf("%d\n", a);
+    return i >= 0 && i < h && j >= 0 && j < w;
 }
 
-void cPrintLn(const std::vector<int> &v, char delimiter = ' ')
+void refine(vector<char> &v, const int i, const int j, const int w, const int h, int &ans)
 {
-    int n = v.size();
-    for (int i = 0; i < n; i++)
+    int dx[] = {1, 0, -1, 0};
+    int dy[] = {0, 1, 0, -1};
+
+    for (int k = 0; k < 4; k++)
     {
-        std::cout << v[i];
-        if (i != n - 1)
-            printf("%c", delimiter);
-        else
-            printf("\n");
-    }
-}
-
-int selectionSort(vector<int> &a)
-{
-    int n = a.size(), cnt = 0;
-    for (int i = 0; i < n; i++)
-    {
-        int minj = i;
-        for (int j = i; j < n; j++)
+        if (!isRange(i + dx[k], j + dy[k], w, h))
+            continue;
+        int idx = cor2Idx(i + dx[k], j + dy[k], w);
+        if (v[idx] == '-' || v[idx] == '#')
+            continue;
+        else if (v[idx] == '.')
         {
-            if (a[j] > a[minj])
-                minj = j;
-        }
-        if (i < minj)
-        {
-            swap(a[i], a[minj]);
-            cnt++;
+            v[idx] = '-';
+            ans++;
+            refine(v, i + dx[k], j + dy[k], w, h, ans);
         }
     }
-    return cnt;
 }
 
 int main()
 {
-    int n;
-    cReadLn(n);
-    vector<int> v(n);
-    cReadLn(v);
+    while (true)
+    {
+        int w;
+        scanf("%d", &w);
+        int h;
+        scanf("%d", &h);
 
-    int cnt = selectionSort(v);
+        if (w == 0 && h == 0)
+            break;
 
-    cPrintLn(cnt);
-    cPrintLn(v);
+        int si, sj;
+        vector<char> v(w * h);
+        for (int i = 0; i < w * h; i++)
+        {
+            char buf;
+            scanf("%c", &buf);
+            if (buf == '\n')
+                i--;
+            else
+            {
+                v[i] = buf;
+                if (buf == '@')
+                    idx2Cor(i, si, sj, w);
+            }
+        }
+
+        int ans = 1;
+        refine(v, si, sj, w, h, ans);
+        printf("%d\n", ans);
+    }
 
     return 0;
 }
