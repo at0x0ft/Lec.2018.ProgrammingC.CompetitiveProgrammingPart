@@ -24,7 +24,6 @@ int main()
         int id, chN;
         scanf("%d %d", &id, &chN);
 
-        int depth = 0;
         for (int j = 0; j < chN; j++)
         {
             int ch;
