@@ -29,7 +29,20 @@ int main()
         scanf("%d", &p[i]);
     }
 
-    findMaxRec(p, 0, m);
+    sort(p.begin(), p.end());
+
+    int gapMax = 0, n;
+
+    for (int i = nmin; i <= nmax; i++)
+    {
+        int gap = p[m - i] - p[m - i - 1];
+        if (gap > gapMax)
+        {
+            gapMax = gap;
+            n = i;
+        }
+    }
+    printf("%d\n", n);
 
     return 0;
 }
