@@ -14,7 +14,8 @@ int findMaxRec(const vector<int> &a, const int l, const int r)
         int rcnd = findMaxRec(a, mid, r);
         res = max(lcnd, rcnd);
     }
-    cPrintLn(res);
+    printf("%d\n", res);
+
     return res;
 }
 
@@ -22,6 +23,11 @@ int main()
 {
     int n;
     scanf("%d", &n);
+    vector<int> v(n);
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &v[i]);
+    }
 
     findMaxRec(v, 0, n);
 
