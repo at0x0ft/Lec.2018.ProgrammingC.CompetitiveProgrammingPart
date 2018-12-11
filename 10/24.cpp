@@ -2,53 +2,29 @@
 
 using namespace std;
 
-void cReadLn(int &n)
+int findMin(const vector<int> &v, const int l, const int r)
 {
-    scanf("%d", &n);
-}
-
-void cPrintLn(const int &a)
-{
-    printf("%d\n", a);
-}
-
-void cReadLn(std::vector<int> &v)
-{
-    int n = v.size();
-    for (int i = 0; i < n; i++)
-        scanf("%d", &v[i]);
-}
-
-int findMinDiff(vector<int> &v)
-{
-    sort(v.begin(), v.end());
-
-    int minDiff = v[1] - v[0], n = v.size();
-    for (int i = 1; i < n - 1; i++)
+    if (l == r)
     {
-        minDiff = min(minDiff, v[i + 1] - v[i]);
+        printf("%d\n", v[l]);
+        return v[l];
     }
-    return minDiff;
+    int mid = (l + r) / 2, ret = min(findMin(v, mid + 1, r), findMin(v, l, mid));
+    printf("%d\n", ret);
+    return ret;
 }
 
 int main()
 {
-    while (true)
+    int n;
+    scanf("%d", &n);
+    vector<int> v(n);
+    for (int i = 0; i < n; i++)
     {
-        int n;
-        scanf("%d", &n);
-
-        if (n == 0)
-            break;
-
-        vector<int> v(n);
-        for (int i = 0; i < n; i++)
-        {
-            scanf("%d", &v[i]);
-        }
-
-        printf("%d\n", findMinDiff(v));
+        scanf("%d", &v[i]);
     }
+
+    findMin(v, 0, n - 1);
 
     return 0;
 }
