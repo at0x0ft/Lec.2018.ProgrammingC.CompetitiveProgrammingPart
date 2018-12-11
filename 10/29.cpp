@@ -39,6 +39,11 @@ void postorder(int id, vector<Node> &t)
     printf(" %d", id);
 }
 
+int findRootId(const vector<Node> &t, const int id)
+{
+    return t[id].parent < 0 ? id : findRootId(t, id + 1);
+}
+
 int main()
 {
     int n;
@@ -56,18 +61,24 @@ int main()
         int id;
         scanf("%d", &id);
         scanf("%d %d", &t[id].left, &t[id].right);
+        t[t[id].left].parent = id;
+        t[t[id].right].parent = id;
     }
 
+    int rootId = findRootId(t, 0);
+
+    fprintf(stderr, "debug print : rootId = %d\n", rootId); // 4debug
+
     printf("Preorder\n");
-    preorder(0, t);
+    preorder(rootId, t);
     printf("\n");
 
     printf("Inorder\n");
-    inorder(0, t);
+    inorder(rootId, t);
     printf("\n");
 
     printf("Postorder\n");
-    postorder(0, t);
+    postorder(rootId, t);
     printf("\n");
 
     return 0;
