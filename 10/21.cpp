@@ -29,7 +29,7 @@ int main()
         scanf("%d", &p[i]);
     }
 
-    findMaxRec(v, 0, n);
+    findMaxRec(p, 0, m);
 
     return 0;
 }
