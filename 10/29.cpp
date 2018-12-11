@@ -67,8 +67,6 @@ int main()
 
     int rootId = findRootId(t, 0);
 
-    fprintf(stderr, "debug print : rootId = %d\n", rootId); // 4debug
-
     printf("Preorder\n");
     preorder(rootId, t);
     printf("\n");
