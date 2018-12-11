@@ -2,31 +2,46 @@
 
 using namespace std;
 
-bool solve(const vector<int> &a, const int n, const int idx, const int m)
+struct node
 {
-    if (m == 0)
-        return true;
-    if (idx >= n)
-        return false;
-    return solve(a, n, idx + 1, m) || solve(a, n, idx + 1, m - a[idx]);
-}
+    int parent;
+    int depth;
+} Node;
 
 int main()
 {
     int n;
-    scanf("%d", &n);
-    vector<int> a(n);
+    scanf("%d\n", &n);
+    vector<node> t(n);
     for (int i = 0; i < n; i++)
     {
-        scanf("%d", &a[i]);
+        t[i].parent = -1;
+        t[i].depth = 0;
     }
-    int q, m;
-    scanf("%d", &q);
-    for (int i = 0; i < q; i++)
+
+    for (int i = 0; i < n; i++)
     {
-        scanf("%d", &m);
-        printf("%s\n", solve(a, n, 0, m) ? "true" : "false");
+        int id, chN;
+        scanf("%d %d", &id, &chN);
+
+        int depth = 0;
+        for (int j = 0; j < chN; j++)
+        {
+            int ch;
+            scanf("%d", &ch);
+
+            t[ch].parent = id;
+            t[ch].depth = t[id].depth + 1;
+        }
     }
+
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d %d %d", i, t[i].parent, t[i].depth);
+        if (i != n - 1)
+            printf("\n");
+    }
+    printf("\n");
 
     return 0;
 }
