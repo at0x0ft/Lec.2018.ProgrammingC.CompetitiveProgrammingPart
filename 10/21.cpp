@@ -21,12 +21,12 @@ int findMaxRec(const vector<int> &a, const int l, const int r)
 
 int main()
 {
-    int n;
-    scanf("%d", &n);
-    vector<int> v(n);
-    for (int i = 0; i < n; i++)
+    int m, nmin, nmax;
+    scanf("%d %d %d", &m, &nmin, &nmax);
+    vector<int> p(m);
+    for (int i = 0; i < m; i++)
     {
-        scanf("%d", &v[i]);
+        scanf("%d", &p[i]);
     }
 
     findMaxRec(v, 0, n);
