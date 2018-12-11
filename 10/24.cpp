@@ -36,13 +36,18 @@ int main()
     while (true)
     {
         int n;
-        cReadLn(n);
+        scanf("%d", &n);
+
         if (n == 0)
             break;
-        vector<int> v(n);
-        cReadLn(v);
 
-        cPrintLn(findMinDiff(v));
+        vector<int> v(n);
+        for (int i = 0; i < n; i++)
+        {
+            scanf("%d", &v[i]);
+        }
+
+        printf("%d\n", findMinDiff(v));
     }
 
     return 0;
