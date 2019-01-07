@@ -2,47 +2,67 @@
 
 using namespace std;
 
-int findMaxRec(const vector<int> &a, const int l, const int r)
+int merge(vector<int> &a, const int left, const int mid, const int right, int &revNum)
 {
-    int res = INT_MIN;
-    if (l == r - 1)
-        res = a[l];
-    else
-    {
-        int mid = (l + r) / 2;
-        int lcnd = findMaxRec(a, l, mid);
-        int rcnd = findMaxRec(a, mid, r);
-        res = max(lcnd, rcnd);
-    }
-    printf("%d\n", res);
+    const int n1 = mid - left;
+    const int n2 = right - mid;
+    vector<int> l(n1 + 1), r(n2 + 1);
 
-    return res;
+    int k = 0;
+    for (int i = 0; i < n1; i++)
+    {
+        l[i] = a[left + i];
+    }
+    l[n1] = INT_MAX;
+
+    for (int i = 0; i < n2; i++)
+    {
+        r[i] = a[mid + i];
+    }
+    r[n2] = INT_MAX;
+
+    int i = 0, j = 0;
+    for (int k = left; k < right; k++)
+    {
+        if (l[i] <= r[j])
+        {
+            a[k] = l[i++];
+        }
+        else
+        {
+            a[k] = r[j];
+            revNum += j + mid - k;
+            j++;
+        }
+    }
+
+    return revNum;
+}
+
+void mergeSort(vector<int> &a, const int left, const int right, int &revNum)
+{
+    if (left + 1 < right)
+    {
+        const int mid = (left + right) / 2;
+        mergeSort(a, left, mid, revNum);
+        mergeSort(a, mid, right, revNum);
+        revNum = merge(a, left, mid, right, revNum);
+        printf("%d\n", revNum);
+    }
 }
 
 int main()
 {
-    int m, nmin, nmax;
-    scanf("%d %d %d", &m, &nmin, &nmax);
-    vector<int> p(m);
-    for (int i = 0; i < m; i++)
+    int n;
+    scanf("%d", &n);
+    vector<int> a(n);
+    for (int i = 0; i < n; i++)
     {
-        scanf("%d", &p[i]);
+        scanf("%d", &a[i]);
     }
 
-    sort(p.begin(), p.end());
-
-    int gapMax = 0, n;
-
-    for (int i = nmin; i <= nmax; i++)
-    {
-        int gap = p[m - i] - p[m - i - 1];
-        if (gap > gapMax)
-        {
-            gapMax = gap;
-            n = i;
-        }
-    }
-    printf("%d\n", n);
+    int revNum = 0;
+    mergeSort(a, 0, n, revNum);
 
     return 0;
 }
