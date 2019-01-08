@@ -2,29 +2,109 @@
 
 using namespace std;
 
-int findMin(const vector<int> &v, const int l, const int r)
+struct Node
 {
-    if (l == r)
+    int key;
+    Node *right, *left, *parent;
+};
+
+Node *root, *nullNode;
+
+Node *createNode(const int key)
+{
+    Node *n = (Node *)malloc(sizeof(Node));
+    n->key = key;
+    n->left = nullNode;
+    n->right = nullNode;
+    return n;
+}
+
+void insert(const int k)
+{
+    Node *y = root, *z = createNode(k);
+    for (Node *i = root; i != nullNode; z->key < i->key ? i = i->left : i = i->right)
     {
-        printf("%d\n", v[l]);
-        return v[l];
+        y = i;
     }
-    int mid = (l + r) / 2, ret = min(findMin(v, mid + 1, r), findMin(v, l, mid));
-    printf("%d\n", ret);
-    return ret;
+
+    z->parent = y;
+    if (y == nullNode)
+        root = z;
+    else if (z->key < y->key)
+        y->left = z;
+    else
+        y->right = z;
+}
+
+bool find(Node *n, const int k)
+{
+    if (n == nullNode)
+        return false;
+    if (k < n->key)
+        return find(n->left, k);
+    else if (k > n->key)
+        return find(n->right, k);
+    return true;
+}
+
+void inorder(const Node *n)
+{
+    if (n == nullNode)
+        return;
+    inorder(n->left);
+    printf(" %d", n->key);
+    inorder(n->right);
+}
+
+void preorder(const Node *n)
+{
+    if (n == nullNode)
+        return;
+    printf(" %d", n->key);
+    preorder(n->left);
+    preorder(n->right);
+}
+
+void deleteNode(Node *n)
+{
+    if (n == nullNode)
+        return;
+    deleteNode(n->left);
+    deleteNode(n->right);
+    free(n);
 }
 
 int main()
 {
     int n;
     scanf("%d", &n);
-    vector<int> v(n);
     for (int i = 0; i < n; i++)
     {
-        scanf("%d", &v[i]);
+        string ord;
+        cin >> ord;
+        if (ord == "insert")
+        {
+            int k;
+            cin >> k;
+            insert(k);
+        }
+        else if (ord == "find")
+        {
+            int k;
+            cin >> k;
+            printf("%s\n", find(root, k) ? "yes" : "no");
+        }
+        else
+        {
+            inorder(root);
+            printf("\n");
+
+            preorder(root);
+            printf("\n");
+        }
     }
 
-    findMin(v, 0, n - 1);
+    deleteNode(root);
 
     return 0;
 }
