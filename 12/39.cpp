@@ -2,67 +2,48 @@
 
 using namespace std;
 
-int merge(vector<int> &a, const int left, const int mid, const int right, int &revNum)
+#define MAX_STR_LEN 1001
+
+int mat[MAX_STR_LEN][MAX_STR_LEN];
+
+int lcs(string x, string y)
 {
-    const int n1 = mid - left;
-    const int n2 = right - mid;
-    vector<int> l(n1 + 1), r(n2 + 1);
-
-    int k = 0;
-    for (int i = 0; i < n1; i++)
+    int xlen = x.length();
+    int ylen = y.length();
+    for (int i = 0; i < xlen; i++)
     {
-        l[i] = a[left + i];
-    }
-    l[n1] = INT_MAX;
-
-    for (int i = 0; i < n2; i++)
-    {
-        r[i] = a[mid + i];
-    }
-    r[n2] = INT_MAX;
-
-    int i = 0, j = 0;
-    for (int k = left; k < right; k++)
-    {
-        if (l[i] <= r[j])
+        for (int j = 0; j < ylen; j++)
         {
-            a[k] = l[i++];
-        }
-        else
-        {
-            a[k] = r[j];
-            revNum += j + mid - k;
-            j++;
+            if (i != 0 && j != 0)
+            {
+                mat[i][j] = max(mat[i - 1][j - 1] + (x[i] == y[j]), max(mat[i - 1][j], mat[i][j - 1]));
+            }
+            else
+            {
+                mat[i][j] = 0;
+            }
         }
     }
 
-    return revNum;
-}
-
-void mergeSort(vector<int> &a, const int left, const int right, int &revNum)
-{
-    if (left + 1 < right)
+    // 4debug
+    for (int i = 0; i < xlen; i++)
     {
-        const int mid = (left + right) / 2;
-        mergeSort(a, left, mid, revNum);
-        mergeSort(a, mid, right, revNum);
-        revNum = merge(a, left, mid, right, revNum);
-        printf("%d\n", revNum);
+        for (int j = 0; j < ylen; j++)
+        {
+            printf("%2d ", mat[i][j]);
+        }
+        printf("\n");
     }
+    // 4debug
+
+    return mat[xlen - 1][ylen - 1];
 }
 
 int main()
 {
-    int n;
-    scanf("%d", &n);
-    vector<int> a(n);
-    for (int i = 0; i < n; i++)
-    {
-        scanf("%d", &a[i]);
-    }
-
-    int revNum = 0;
-    mergeSort(a, 0, n, revNum);
+    string x, y;
+    cin >> x >> y;
+    printf("%d\n", lcs(x, y));
 
     return 0;
 }

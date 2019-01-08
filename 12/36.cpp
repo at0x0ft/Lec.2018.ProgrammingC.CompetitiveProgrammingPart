@@ -2,59 +2,28 @@
 
 using namespace std;
 
-int parent(int i)
+long long int combi(const int n, const int r)
 {
-    return i / 2;
-}
-int left(int i) { return 2 * i; }
-int right(int i) { return 2 * i + 1; }
+    if (n - r < r)
+        return combi(n, n - r);
 
-bool hasParent(int i, int n) { return parent(i) >= 1; }
-bool hasLeft(int i, int n) { return left(i) <= n; }
-bool hasRight(int i, int n) { return right(i) <= n; }
-
-void maxHeapify(vector<int> &a, const int i)
-{
-    int l = left(i);
-    int r = right(i);
-    int max = i, h = a.size();
-    if (l <= h && a[l] > a[max])
-        max = l;
-    if (r <= h && a[r] > a[max])
-        max = r;
-    if (max != i)
+    long long int res = 1;
+    for (int i = 1; i <= r; i++)
     {
-        swap(a[i], a[max]);
-        maxHeapify(a, max);
+        res *= (n - i + 1);
+        res /= i;
     }
-}
-
-void buildMaxHeap(vector<int> &a)
-{
-    int h = a.size();
-    for (int i = h / 2; i > 0; i--)
-    {
-        maxHeapify(a, i);
-    }
+    return res;
 }
 
 int main()
 {
+    int m;
+    scanf("%d", &m);
     int n;
     scanf("%d", &n);
-    vector<int> a(n + 1);
-    for (int i = 1; i <= n; i++)
-    {
-        scanf("%d", &a[i]);
-    }
 
-    buildMaxHeap(a);
-
-    for (int i = 1; i <= n; i++)
-    {
-        printf(" %d", a[i]);
-    }
-    printf("\n");
+    printf("%lld\n", combi(m - 1, m - n));
 
     return 0;
 }

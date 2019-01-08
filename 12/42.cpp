@@ -2,33 +2,36 @@
 
 using namespace std;
 
-int parent(int i) { return i / 2; }
-int left(int i) { return 2 * i; }
-int right(int i) { return 2 * i + 1; }
+#define MAT_LEN_MAX 100
 
-bool hasParent(int i, int n) { return parent(i) >= 1; }
-bool hasLeft(int i, int n) { return left(i) <= n; }
-bool hasRight(int i, int n) { return right(i) <= n; }
+int mat[MAT_LEN_MAX][MAT_LEN_MAX];
 
 int main()
 {
     int n;
     scanf("%d", &n);
-    vector<int> a(n + 1);
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
-        scanf("%d", &a[i]);
+        int buf;
+        scanf("%d", &buf);
+        // v num
+        scanf("%d", &buf);
+        for (int j = 0; j < buf; j++)
+        {
+            int loc;
+            scanf("%d", &loc);
+            mat[i][loc - 1] = 1;
+        }
     }
 
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
-        printf("node %d: key = %d, ", i, a[i]);
-        if (hasParent(i, n))
-            printf("parent key = %d, ", a[parent(i)]);
-        if (hasLeft(i, n))
-            printf("left key = %d, ", a[left(i)]);
-        if (hasRight(i, n))
-            printf("right key = %d, ", a[right(i)]);
+        for (int j = 0; j < n; j++)
+        {
+            printf("%d", mat[i][j]);
+            if (j != n - 1)
+                printf(" ");
+        }
         printf("\n");
     }
 

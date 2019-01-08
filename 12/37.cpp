@@ -2,40 +2,18 @@
 
 using namespace std;
 
-int parent(int i)
-{
-    return i / 2;
-}
-int left(int i) { return 2 * i; }
-int right(int i) { return 2 * i + 1; }
+#define MAX_FIB_NUM 100
 
-bool hasParent(int i, int n) { return parent(i) >= 1; }
-bool hasLeft(int i, int n) { return left(i) <= n; }
-bool hasRight(int i, int n) { return right(i) <= n; }
+int fibNum[MAX_FIB_NUM];
 
-void maxHeapify(vector<int> &a, const int i)
+int fib(int n)
 {
-    int l = left(i);
-    int r = right(i);
-    int max = i, h = a.size();
-    if (l <= h && a[l] > a[max])
-        max = l;
-    if (r <= h && a[r] > a[max])
-        max = r;
-    if (max != i)
+    if (n == 0)
     {
-        swap(a[i], a[max]);
-        maxHeapify(a, max);
+        fibNum[n] = 0;
+        return 0;
     }
-}
-
-void buildMaxHeap(vector<int> &a)
-{
-    int h = a.size();
-    for (int i = h / 2; i > 0; i--)
-    {
-        maxHeapify(a, i);
-    }
+    else if (n == 1 ||)
 }
 
 int main()
