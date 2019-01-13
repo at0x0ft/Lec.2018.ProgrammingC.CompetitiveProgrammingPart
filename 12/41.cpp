@@ -6,27 +6,25 @@ int main()
 {
     int n;
     scanf("%d", &n);
+    vector<int> dsts(n);
     for (int i = 0; i < n; i++)
     {
-        string ord;
-        cin >> ord;
-        if (ord == "insert")
+        int cnt = 0;
+        for (int j = 0; j < n; j++)
         {
-            int k;
-            cin >> k;
-            insert(k);
+            int buf;
+            scanf("%d", &buf);
+            if (buf != 0)
+                dsts[cnt++] = j;
         }
-        else
-        {
-            inorder(root);
-            printf("\n");
 
-            preorder(root);
-            printf("\n");
+        printf("%d %d", i + 1, cnt);
+        for (int j = 0; j < cnt; j++)
+        {
+            printf(" %d", dsts[j] + 1);
         }
+        printf("\n");
     }
-
-    deleteTree();
 
     return 0;
 }
