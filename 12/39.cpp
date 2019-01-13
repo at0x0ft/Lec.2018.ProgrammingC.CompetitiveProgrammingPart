@@ -10,13 +10,13 @@ int lcs(string x, string y)
 {
     int xlen = x.length();
     int ylen = y.length();
-    for (int i = 0; i < xlen; i++)
+    for (int i = 1; i <= xlen; i++)
     {
-        for (int j = 0; j < ylen; j++)
+        for (int j = 1; j <= ylen; j++)
         {
             if (i != 0 && j != 0)
             {
-                mat[i][j] = max(mat[i - 1][j - 1] + (x[i] == y[j]), max(mat[i - 1][j], mat[i][j - 1]));
+                mat[i][j] = max(mat[i - 1][j - 1] + (x[i - 1] == y[j - 1]), max(mat[i - 1][j], mat[i][j - 1]));
             }
             else
             {
@@ -25,18 +25,7 @@ int lcs(string x, string y)
         }
     }
 
-    // 4debug
-    for (int i = 0; i < xlen; i++)
-    {
-        for (int j = 0; j < ylen; j++)
-        {
-            printf("%2d ", mat[i][j]);
-        }
-        printf("\n");
-    }
-    // 4debug
-
-    return mat[xlen - 1][ylen - 1];
+    return mat[xlen][ylen];
 }
 
 int main()
