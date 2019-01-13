@@ -2,37 +2,33 @@
 
 using namespace std;
 
-#define MAX_FIB_NUM 100
+#define MAX_FIB_NUM 30 + 1
 
-int fibNum[MAX_FIB_NUM];
+long long int fibNum[MAX_FIB_NUM] = {[0] = 1, [1] = 1};
 
-int fib(int n)
+inline void calcFib(const int n)
 {
-    if (n == 0)
+    if (n >= 2)
+        for (int i = 2; i <= n; i++)
+            fibNum[i] = fibNum[i - 1] + fibNum[i - 2];
+}
+
+inline void printFibNum(const int n)
+{
+    printf("%lld", fibNum[0]);
+    for (int i = 1; i <= n; i++)
     {
-        fibNum[n] = 0;
-        return 0;
+        printf(" %lld", fibNum[i]);
     }
-    else if (n == 1 ||)
+    printf("\n");
 }
 
 int main()
 {
     int n;
     scanf("%d", &n);
-    vector<int> a(n + 1);
-    for (int i = 1; i <= n; i++)
-    {
-        scanf("%d", &a[i]);
-    }
-
-    buildMaxHeap(a);
-
-    for (int i = 1; i <= n; i++)
-    {
-        printf(" %d", a[i]);
-    }
-    printf("\n");
+    calcFib(n);
+    printFibNum(n);
 
     return 0;
 }
