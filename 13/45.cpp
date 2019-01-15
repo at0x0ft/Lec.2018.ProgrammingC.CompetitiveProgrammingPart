@@ -14,7 +14,7 @@ inline bool isMatRange(const int i, const int j)
     return 0 <= i && i < MAT_LEN && 0 <= j && j < MAT_LEN;
 }
 
-queue<pair<pair<int, int>, int>> que;
+queue<pair<pair<int, int>, int> > que;
 
 int search(pair<int, int> &g)
 {
@@ -68,15 +68,6 @@ int main()
                 break;
             }
         }
-    }
-
-    for (int i = 0; i < MAT_LEN; i++)
-    {
-        for (int j = 0; j < MAT_LEN; j++)
-        {
-            printf("%d", mat[i][j]);
-        }
-        printf("\n");
     }
 
     que.push(pair<pair<int, int>, int>(start, 0));
