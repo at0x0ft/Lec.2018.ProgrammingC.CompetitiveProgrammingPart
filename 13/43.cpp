@@ -2,34 +2,83 @@
 
 using namespace std;
 
-#define MAX_MN 20
+#define MAT_LEN_MAX 100
 
-pair<bool, long long int> dp[MAX_MN + 1][MAX_MN + 1];
+int mat[MAT_LEN_MAX][MAT_LEN_MAX];
 
-long long int combi(const int n, const int r)
+int cnt;
+
+stack<int> stk;
+void dfs(const int n)
 {
-    if (dp[n][r].first)
-        return dp[n][r].second;
-
-    if (r == 0)
+    int v = stk.top();
+    cnt++;
+    printf("%d", v + 1);
+    for (int i = 0; i < n; i++)
     {
-        dp[n][r].first = true;
-        dp[n][r].second = 1;
-        return 1;
+        if (mat[v][i] == 1 && cnt < n)
+        {
+            printf(" ");
+            stk.push(i);
+            dfs(n);
+        }
     }
-    if (r > n - r)
-        return combi(n, n - r);
+    stk.pop();
+}
 
-    dp[n][r].first = true;
-    dp[n][r].second = combi(n - 1, r - 1) + combi(n - 1, r);
-    return dp[n][r].second;
+queue<int> que;
+bool hasFlg[MAT_LEN_MAX];
+void bfs(const int n)
+{
+    int v = que.front();
+    que.pop();
+    cnt++;
+    if (cnt < n)
+    {
+        printf("%d ", v + 1);
+        for (int i = 0; i < n; i++)
+        {
+            if (mat[v][i] && !hasFlg[i])
+            {
+                que.push(i);
+                hasFlg[i] = true;
+            }
+        }
+
+        bfs(n);
+    }
+    else
+        printf("%d", v + 1);
 }
 
 int main()
 {
-    int m, n;
-    scanf("%d %d", &m, &n);
-    printf("%lld\n", combi(m + n - 1, m));
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++)
+    {
+        int buf;
+        scanf("%d", &buf);
+        // v num
+        scanf("%d", &buf);
+        for (int j = 0; j < buf; j++)
+        {
+            int loc;
+            scanf("%d", &loc);
+            mat[i][loc - 1] = 1;
+        }
+    }
+
+    cnt = 0;
+    que.push(0);
+    hasFlg[0] = true;
+    bfs(n);
+    printf("\n");
+
+    cnt = 0;
+    stk.push(0);
+    dfs(n);
+    printf("\n");
 
     return 0;
 }
