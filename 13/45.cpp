@@ -2,33 +2,86 @@
 
 using namespace std;
 
-#define MAX_FIB_NUM 30 + 1
+#define MAT_LEN 10
 
-long long int fibNum[MAX_FIB_NUM] = {[0] = 1, [1] = 1};
+int mat[MAT_LEN][MAT_LEN];
 
-inline void calcFib(const int n)
+int dx[] = {1, 0, -1, 0};
+int dy[] = {0, 1, 0, -1};
+
+inline bool isMatRange(const int i, const int j)
 {
-    if (n >= 2)
-        for (int i = 2; i <= n; i++)
-            fibNum[i] = fibNum[i - 1] + fibNum[i - 2];
+    return 0 <= i && i < MAT_LEN && 0 <= j && j < MAT_LEN;
 }
 
-inline void printFibNum(const int n)
+queue<pair<pair<int, int>, int>> que;
+
+int search(pair<int, int> &g)
 {
-    printf("%lld", fibNum[0]);
-    for (int i = 1; i <= n; i++)
+    pair<pair<int, int>, int> cc = que.front();
+    que.pop();
+
+    if (cc.first == g)
+        return cc.second;
+
+    for (int i = 0; i < 4; i++)
     {
-        printf(" %lld", fibNum[i]);
+        if (isMatRange(cc.first.first + dx[i], cc.first.second + dy[i]) && mat[cc.first.first + dx[i]][cc.first.second + dy[i]] == 1)
+        {
+            mat[cc.first.first + dx[i]][cc.first.second + dy[i]] = 0;
+            que.push(pair<pair<int, int>, int>(pair<int, int>(cc.first.first + dx[i], cc.first.second + dy[i]), cc.second + 1));
+        }
     }
-    printf("\n");
+    return search(g);
 }
 
 int main()
 {
-    int n;
-    scanf("%d", &n);
-    calcFib(n);
-    printFibNum(n);
+    pair<int, int> start, goal;
+
+    for (int j = 0; j < MAT_LEN; j++)
+    {
+        string line;
+        cin >> line;
+        for (int i = 0; i < MAT_LEN; i++)
+        {
+
+            switch (line[i])
+            {
+            case '#':
+                mat[j][i] = 0;
+                break;
+            case '.':
+                mat[j][i] = 1;
+                break;
+            case 'S':
+                mat[j][i] = 1;
+                start.first = j;
+                start.second = i;
+                break;
+            case 'G':
+                mat[j][i] = 1;
+                goal.first = j;
+                goal.second = i;
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    for (int i = 0; i < MAT_LEN; i++)
+    {
+        for (int j = 0; j < MAT_LEN; j++)
+        {
+            printf("%d", mat[i][j]);
+        }
+        printf("\n");
+    }
+
+    que.push(pair<pair<int, int>, int>(start, 0));
+
+    printf("%d\n", search(goal));
 
     return 0;
 }
