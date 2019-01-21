@@ -7,20 +7,6 @@ using namespace std;
 int n;
 int mat[MAX_N][MAX_N];
 
-int calcSum()
-{
-    int ans = 0;
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            if (n > 0)
-                ans += mat[i][j];
-        }
-    }
-    return ans;
-}
-
 int prim()
 {
     priority_queue<pair<int, pair<int, int> >, vector<pair<int, pair<int, int> > >, greater<pair<int, pair<int, int> > > > pq;
