@@ -2,43 +2,79 @@
 
 using namespace std;
 
-#define MAX_STR_LEN 21
+#define MAX_N 100
 
-int mat[MAX_STR_LEN][MAX_STR_LEN];
+int n;
+int mat[MAX_N][MAX_N];
 
-int calc(vector<string> route, const int w, const int h)
+int calcSum()
 {
-    for (int i = 0; i < h; i++)
+    int ans = 0;
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < w; j++)
+        for (int j = 0; j < n; j++)
         {
-            if (i != 0 && j != 0)
-            {
-                mat[i][j] += route[i - 1][j] != 'X' ? mat[i - 1][j] : 0;
-                mat[i][j] += route[i][j - 1] != 'X' ? mat[i][j - 1] : 0;
-            }
-            else
-            {
-                mat[i][j] = 1;
-            }
+            if (n > 0)
+                ans += mat[i][j];
         }
     }
+    return ans;
+}
 
-    return mat[h - 1][w - 1];
+int prim()
+{
+    priority_queue<pair<int, pair<int, int> >, vector<pair<int, pair<int, int> > >, greater<pair<int, pair<int, int> > > > pq;
+    set<int> vst;
+
+    int cv = 0, nc, sum = 0;
+    while (true)
+    {
+        vst.insert(cv);
+        if (vst.size() == n)
+            break;
+        for (int i = 0; i < n; i++)
+        {
+            if (mat[cv][i] > 0)
+                pq.push(pair<int, pair<int, int> >(mat[cv][i], pair<int, int>(cv, i)));
+        }
+
+        while (!pq.empty())
+        {
+            nc = pq.top().first;
+            cv = pq.top().second.second;
+            pq.pop();
+            if (vst.count(cv) == 0)
+                break;
+        }
+
+        if (pq.empty())
+            break;
+
+        sum += nc;
+    }
+
+    return sum;
 }
 
 int main()
 {
-    int w, h;
-    scanf("%d %d", &w, &h);
-
-    vector<string> route(h);
-    for (int i = 0; i < h; i++)
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++)
     {
-        cin >> route[i];
+        for (int j = 0; j < n; j++)
+        {
+            int buf;
+            scanf("%d", &buf);
+
+            if (i == j)
+                mat[i][j] = 0;
+            else
+                mat[i][j] = buf;
+        }
     }
 
-    printf("%d\n", calc(route, w, h));
+    printf("%d\n", prim());
 
     return 0;
 }
+
