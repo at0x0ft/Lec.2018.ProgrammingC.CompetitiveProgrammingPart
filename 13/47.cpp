@@ -2,37 +2,80 @@
 
 using namespace std;
 
-#define MAX_STR_LEN 1001
+#define MAT_MAX 100
 
-int mat[MAX_STR_LEN][MAX_STR_LEN];
+int mat[MAT_MAX][MAT_MAX];
 
-int lcs(string x, string y)
+void matInit(const int n)
 {
-    int xlen = x.length();
-    int ylen = y.length();
-    for (int i = 1; i <= xlen; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 1; j <= ylen; j++)
+        for (int j = 0; j < n; j++)
         {
-            if (i != 0 && j != 0)
-            {
-                mat[i][j] = max(mat[i - 1][j - 1] + (x[i - 1] == y[j - 1]), max(mat[i - 1][j], mat[i][j - 1]));
-            }
-            else
-            {
-                mat[i][j] = 0;
-            }
+            mat[i][j] = i == j ? 0 : -1;
         }
     }
+}
 
-    return mat[xlen][ylen];
+int findMin(const int s, const int n, const vector<bool> &v)
+{
+    int min = INT_MAX, res = -1;
+    for (int i = 0; i < n; i++)
+    {
+        if (!v[i] && mat[s][i] >= 0 && mat[s][i] < min)
+        {
+            min = mat[s][i];
+            res = i;
+        }
+    }
+    return res;
+}
+
+void setTrue(const int i, vector<bool> &v, int &cnt)
+{
+    v[i] = true;
+    cnt++;
 }
 
 int main()
 {
-    string x, y;
-    cin >> x >> y;
-    printf("%d\n", lcs(x, y));
+    int n;
+    scanf("%d", &n);
+    matInit(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        int buf, nn;
+        scanf("%d %d", &buf, &nn);
+        for (int j = 0; j < nn; j++)
+        {
+            int d, c;
+            scanf("%d %d", &d, &c);
+            mat[i][d] = c;
+        }
+    }
+
+    vector<bool> visited(n, false);
+    int cnt = 0;
+    setTrue(0, visited, cnt);
+    while (cnt < n)
+    {
+        int nv = findMin(0, n, visited);
+        for (int i = 0; i < n; i++)
+        {
+            if (mat[nv][i] >= 0)
+            {
+                int cnd = mat[0][nv] + mat[nv][i], prv = mat[0][i];
+                mat[0][i] = prv >= 0 ? min(prv, cnd) : cnd;
+            }
+        }
+        setTrue(nv, visited, cnt);
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d %d\n", i, mat[0][i]);
+    }
 
     return 0;
 }
